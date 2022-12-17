@@ -1,0 +1,1 @@
+"0","plot(ts(kapanisfiyat), type=""o"",main=""AKSEN Son 60 Günün Kapaniş Fiyatlarının Trend Grafiği"", xlab=""Gün"",ylab=""Kapanis Fiyati"")"

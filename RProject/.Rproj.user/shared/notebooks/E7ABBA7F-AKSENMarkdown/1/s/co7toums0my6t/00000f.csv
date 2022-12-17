@@ -1,0 +1,8 @@
+"0","modfiyat <- table(kapanisfiyat)"
+"0","names(modfiyat)[which(modfiyat == max(modfiyat))]"
+"1","[1]"
+"1"," ""39""       "
+"1"," ""46""       "
+"1"," ""50.049999"""
+"1","
+"
