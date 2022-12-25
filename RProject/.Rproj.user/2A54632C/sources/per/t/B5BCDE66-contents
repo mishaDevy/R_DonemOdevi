@@ -8,23 +8,27 @@ output: word_document
 Veri yükleme
 ```{r}
 veri <- read.csv("AKSEN.IS.csv")
+btc_veri <- read.csv("BTC-USD.csv")
 ```
 
 Kapanis fiyatinin tanimlanmasi
 ```{r}
 kapanisfiyat <- veri$Close
+btc_kapanisfiyat <- btc_veri$Close
 ```
 
 Ortalama hesaplama
 ```{r}
 mean(kapanisfiyat)
 ```
+Hisse kapanış fiyatının 60 gününün ortalama fiyatı 42.81 TL'dir.
 
 Medyan
 ```{r}
 median(kapanisfiyat)
 
 ```
+Kapanış fiyatlarının %50'si 42.91 TL'den büyüktür.
 
 Mod
 ```{r}
@@ -32,6 +36,8 @@ modfiyat <- table(kapanisfiyat)
 names(modfiyat)[which(modfiyat == max(modfiyat))]
 
 ```
+60 günlük hisse kapanış fiyatının en çok tekrar eden değerleri 39 TL 2 kere, 46 TL 2 kere, 50.049999 TL 2 kere
+tekrar etmektedir. Verilerimiz çok tepelidir.
 
 Çeyriklik ve yüzdeliklerin bulunmasi
 
@@ -40,6 +46,10 @@ quantile(kapanisfiyat)
 quantile(kapanisfiyat, probs= c(10,25,75,90)/100)
 
 ```
+Kapanış fiyatlarının %10'u 32.862 TL'den küçüktür.
+Kapanış fiyatlarının %25'i 39 TL'den küçüktür
+Kapanış fiyatlarının %75'i 48.035 TL'den küçüktür. / Kapanış fiyatlarının %25'i 48.035 TL'den büyüktür.
+Kapanış fiyatlarının %90'ı 50.065 TL'den küçüktür. / Kapanış fiyatlarının %10'u 50.065 TL'den büyüktür.
 
 Varyans - Standart Sapma - Standart Hata
 ```{r}
@@ -48,6 +58,12 @@ sd(kapanisfiyat)
 std_hata <- sd(kapanisfiyat)/sqrt(length(kapanisfiyat))
 std_hata
 ```
+Verilerimizin varyansı 39.67 dir.Bu veri kümenizin elemanları arasındaki dağılımın ne kadar dağınık olduğunu gösterir.
+
+Verilerimizin standart sapması(varyans'ın karekökü) 6.30 dur. Veri kümesinin elemanlarının ortalama değerine olan uzaklıklarının karesinin ortalamasının kareköküdür.
+
+Verilerimizin standart hatası 0.81 dir. Ortalamanın dağılımındaki değişimi gösterir. Örneklem ortalamalarının standart sapmasıdır. (?)
+
 Çarpıklık Katsayısı(Skewness) - Basıklık Katsayısı(Kurtosis)
 ```{r}
 library(moments)
@@ -57,6 +73,9 @@ skewness(kapanisfiyat)
 #Basıklık Katsayısı
 kurtosis(kapanisfiyat)
 ```
+Çarpıklık katsayısı -0.52'dir. Fakat verilerimiz çok tepeli olduğu için çarpıklıktan söz edilemez.
+Basıklık katsayısı 2.31'dir. Fakat verilerimiz çok tepeli oldupu için basıklıktan söz edilemez.
+
 Bowley'in Asimetri Ölçüsü - Pearson'ın asimetri ölçüsü
 ```{r}
 #Bowley'in Asimetri Ölçüsü - Pearson'ın asimetri ölçüsü
@@ -71,24 +90,58 @@ pear_fiyat <- 3*(mean(kapanisfiyat)-median(kapanisfiyat))/sd(kapanisfiyat)
 pear_fiyat
 
 ```
+Bowley'in Asimetri Ölçüsü 0.13'dür. Fakat verilerimiz çok tepeli olduğu için çarpıklıktan söz edilemez.
+Pearson’ın asimetri ölçüsü -0.04'dür. Fakat verilerimiz çok tepeli olduğu için çarpıklıktan söz edilemez.
 
 Histogram Grafiği
 ```{r}
 hist(kapanisfiyat, main="AKSEN Son 60 Günün Kapaniş Fiyatlarının Histogramı", xlab="Kapanis fiyati", ylab="Frekans")
 ```
+Histogram grafiğimiz çok tepeli asimetrik dağılımdır.
+Ortalama=42.81 , Medyan=42.91 , Mod="39" "46" "50.049999"
+Çok tepeli olduğu için aralarındaki ilişkiden çarpıklık hakkında yorum yapılamaz.
 
 Birikimli Sıklık Grafiği
 ```{r}
 f <- c(4,6,4,8,10,10,12,6)
-plot(cumsum(f),type="o",main="Birikimli Sıklık Grafiği",xlab="Kapanis fiyati",ylab="Birikimli Sıklık")
+plot(cumsum(f),type="o",main="Birikimli Sıklık Grafiği",xlab="Sınıf sayısı",ylab="Birikimli Sıklık")
 ```
+Sınıf başına düşen frekans değerlerinin birikimli olarak artığını gösterir.
+8. sınıf'ın birikimli sıklık değeri 60'tır bu değer bütün verilerimin sayısına eşittir.
 
 Trend Grafiği
 ```{r}
 plot(ts(kapanisfiyat), type="o",main="AKSEN Son 60 Günün Kapaniş Fiyatlarının Trend Grafiği", xlab="Gün",ylab="Kapanis Fiyati")
 ```
+Günlük olarak kapanış fiyatlarını gösterir.
 
 Boxplot Grafiği
 ```{r}
 boxplot(kapanisfiyat, col="pink")
 ```
+Grafikte görüldüğü üzere verilerimizde aykırı değer bulunmamaktadır.
+
+Değişim Katsayısını Hesaplama
+```{r}
+# Bitcoin Değişim Katsayısı
+btc_degisimkatsayisi <- (sd(btc_kapanisfiyat) / mean(btc_kapanisfiyat)) * 100
+btc_degisimkatsayisi
+# Hisse Değişim Katsayısı
+hisse_degisimkatsayisi <- (sd(kapanisfiyat) / mean(kapanisfiyat)) * 100
+hisse_degisimkatsayisi
+
+```
+Bitcoin fiyatının değişim katsayısı %8.25'dir. AKSA enerji'nin hisse fiyatının değişim katsayısı %14.7'dir.
+AKSA enerji'nin fiyatı Bitcoin'in fiyatına göre daha heterojendir.
+
+Üstel Büyüme Denklemi
+```{r}
+p0 <- kapanisfiyat[1]
+pT <- kapanisfiyat[60]
+r <- (log(pT/p0))/60 # Günlük artış hızı % 0.73
+# 23 Aralık Fiyat Tahmini
+tahmin <- (kapanisfiyat[60]) * (2.71828^(r*11))
+tahmin
+```
+Tahminimize göre 23 Aralık 2022 tarihinde AKSA Enerji'nin hisse fiyatı 50.89 TL'dir. Günlük artış hızı %0.73'dür.
+23 Aralıkta 49.06 TL olmuştur. Tahminimiz 1.83 TL fazla çıkmıştır.

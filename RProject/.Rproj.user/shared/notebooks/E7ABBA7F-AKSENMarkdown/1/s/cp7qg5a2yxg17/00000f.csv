@@ -1,2 +1,2 @@
 "0","f <- c(4,6,4,8,10,10,12,6)"
-"0","plot(cumsum(f),type=""o"",main=""Birikimli Sıklık Grafiği"",xlab=""Kapanis fiyati"",ylab=""Birikimli Sıklık"")"
+"0","plot(cumsum(f),type=""o"",main=""Birikimli Sıklık Grafiği"",xlab=""Sınıf sayısı"",ylab=""Birikimli Sıklık"")"

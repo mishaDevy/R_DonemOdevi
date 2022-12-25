@@ -1,1 +1,5 @@
-"0","veri <- read.csv(""AKSEN.IS.csv"")"
+"0","btc_veri <- read.csv(""BTC-USD"")
+"
+"2","Warning: cannot open file 'BTC-USD': No such file or directory"
+"2","Error in file(file, ""rt"") : cannot open the connection
+"
